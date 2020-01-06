@@ -1,0 +1,12 @@
+FROM openjdk:8u171
+
+RUN apt update
+RUN apt install -y --no-install-recommends file unzip maven git strip-nondeterminism
+
+RUN git clone https://github.com/rsksmart/bitcoinj.git /code/bitcoinj
+
+WORKDIR /code/bitcoinj
+RUN git checkout v0.14.4-rsk-6
+
+RUN mvn clean package -DskipTests
+RUN strip-nondeterminism ./core/target/bitcoinj-core-0.14.4-rsk-6.jar
